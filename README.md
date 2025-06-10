@@ -6,7 +6,7 @@ en la tienda de aplicaciones cubana **Apklis**.
 ## Funciones
 
 - [x] Comprobar si hay actualizaciones de su APK.
-- [ ] Generar URL de descarga de su aplicación (para apps que no sean de pago).
+- [x] Generar URL de descarga de su aplicación (para apps que no sean de pago).
 - [ ] Comprobar compras de aplicaciones en la tienda.
 
 ## Uso 
@@ -21,17 +21,26 @@ repositories {
 
 * En su `build.gradle` agregue:
 ```groovy
-implementation 'com.github.san2ro:apklisapi:1.0.0'
+implementation 'com.github.san2ro:apklisapi:1.0.1'
 ```
 
 * En su  `MainActivity` agregue:
 ```java
-Apklis.checkUpdate(this.getPackageName(),
-       response ->{
-   // obtiene información de la aplicación 
-   }, error ->{
-  // capturar errores ocurridos 
+Apklis.checkUpdate(this,
+      (infoApp, url) -> {
+    // @return infoApp: información de la aplicación
+    // @return url: url de descarga de la aplicación
+     
+     }, (error, unused) -> {
+     // error 
  });
+ 
+ 
+ @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Apklis.stopCheckUpdate();
+}
 ```
 
 Código de [ejemplo](https://github.com/san2ro/apklisapi/blob/main/app/src/main/java/com/example/apklis/MainActivity.java) 

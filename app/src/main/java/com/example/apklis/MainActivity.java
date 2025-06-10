@@ -20,15 +20,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Apklis.checkUpdate(
-                "com.arr.simple",
-                response -> {
+                this,
+                (infoApp, url) -> {
                     Toast.makeText(
                                     this,
-                                    "App Name: " + response.getLastRelease().getAppName(),
+                                    "App Name: " + infoApp.getLastRelease().getAppName(),
                                     Toast.LENGTH_LONG)
                             .show();
+                    binding.text.setText(url.getDownloadUrl());
                 },
-                error -> {
+                (error, unused) -> {
                     Toast.makeText(this, "Error " + error.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
@@ -37,5 +38,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         this.binding = null;
+        Apklis.stopCheckUpdate();
     }
 }
